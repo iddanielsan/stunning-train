@@ -22,3 +22,7 @@ Route::group([
     Route::post('refresh', [App\Http\Controllers\AuthController::class, 'refresh']);
     Route::post('me', [App\Http\Controllers\AuthController::class, 'me']);
 });
+
+Route::group(['middleware' => 'PrivateRoute'], function ($router) {
+  Route::apiResource('wallet', App\Http\Controllers\WalletController::class);
+});

@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\WalletRequest;
+use App\Services\WalletService;
 
 class WalletController extends Controller
 {
+    public function __construct(WalletService $service)
+    {
+        $this->service = $service;
+    }
+  
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +31,11 @@ class WalletController extends Controller
      */
     public function store(WalletRequest $request)
     {
-        //
+      try {
+        return response()->json($this->service->store($request), 201);
+      } catch (\Throwable $th) {
+        return response()->json(["error" => true, "message" => $th->getMessage()], 500);
+      }
     }
 
     /**
